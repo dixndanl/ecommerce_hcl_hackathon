@@ -233,3 +233,97 @@ Response
 GET /orderhistory (auth)
 Response
 { "orders":[ {"orderId":"...", "placedAt":"...","status":"DELIVERED","total":123.45} ] }
+
+### Products API (backend proxy to Strapi — read-only)
+
+- **Base URL (backend)**: `http://localhost:3000`
+- **Description**: These endpoints proxy to Strapi (`/api/products`) and return responses in Strapi format. All query params are forwarded (e.g., `filters`, `pagination`, `sort`, `populate`, `fields`).
+- **Env**: Configure `STRAPI_BASE_URL` and optional `STRAPI_API_TOKEN` in `backend/.env`.
+
+- **List products**
+  - Endpoint: `GET /products`
+  - Query params (forwarded to Strapi):
+    - `filters[...]` — Strapi filters, e.g., `filters[catalogStatus][$eq]=active`
+    - `pagination[page]`, `pagination[pageSize]`
+    - `sort` — e.g., `title:asc` or `price:desc`
+    - `populate` — relations or media, e.g., `images,thumbnail`
+    - `fields` — select attributes, e.g., `title,price,slug`
+  - Example
+    ```
+    GET /products?filters[catalogStatus][$eq]=active&pagination[page]=1&pagination[pageSize]=24&sort=title:asc&populate=images,thumbnail
+    ```
+  - Response (Strapi list shape)
+    ```json
+    {
+      "data": [
+        {
+          "id": 1,
+          "attributes": {
+            "title": "Cotton T-Shirt",
+            "slug": "cotton-t-shirt",
+            "price": 899,
+            "currency": "INR",
+            "catalogStatus": "active",
+            "createdAt": "2025-08-01T10:00:00.000Z",
+            "updatedAt": "2025-08-05T10:00:00.000Z"
+          }
+        }
+      ],
+      "meta": {
+        "pagination": { "page": 1, "pageSize": 24, "pageCount": 10, "total": 240 }
+      }
+    }
+    ```
+
+- **Get product by ID**
+  - Endpoint: `GET /products/:id`
+  - Query params: same passthrough as list (e.g., `populate`)
+  - Example
+    ```
+    GET /products/1?populate=images,thumbnail
+    ```
+  - Response (Strapi single item shape)
+    ```json
+    {
+      "data": {
+        "id": 1,
+        "attributes": {
+          "title": "Cotton T-Shirt",
+          "slug": "cotton-t-shirt",
+          "price": 899,
+          "currency": "INR"
+        }
+      },
+      "meta": {}
+    }
+    ```
+
+- **Get product by slug**
+  - Endpoint: `GET /products/slug/:slug`
+  - Behavior: Returns a Strapi list (0 or 1 items typically) filtered by slug
+  - Example
+    ```
+    GET /products/slug/cotton-t-shirt?populate=images,thumbnail
+    ```
+  - Response (Strapi list shape)
+    ```json
+    {
+      "data": [
+        {
+          "id": 1,
+          "attributes": {
+            "title": "Cotton T-Shirt",
+            "slug": "cotton-t-shirt",
+            "price": 899
+          }
+        }
+      ],
+      "meta": { "pagination": { "page": 1, "pageSize": 25, "pageCount": 1, "total": 1 } }
+    }
+    ```
+
+- **Error responses**
+  - On Strapi errors, backend responds with appropriate HTTP status and body:
+    ```json
+    { "error": "Failed to fetch products", "details": "<from Strapi>" }
+    ```
