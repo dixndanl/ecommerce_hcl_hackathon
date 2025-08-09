@@ -59,3 +59,29 @@ Feel free to check out the [Strapi GitHub repository](https://github.com/strapi/
 ---
 
 <sub>🤫 Psst! [Strapi is hiring](https://strapi.io/careers).</sub>
+
+### Products
+
+- A minimal product content type has been added as `simple-product` (existing `product` type was present). It includes fields: `title`, `slug`, `productType`, `sku`, `barcode`, `description`, `price`, `currency`, `compareAt`, media `images`/`thumbnail`, inventory fields, dimensions, `catalogStatus`, `tags`, `seo` (component), and `meta`.
+- SEO component `seo.meta` lives at `src/components/seo/meta.json` with `title`, `description`, `keywords`, `canonicalUrl`, and `ogImage`.
+
+Run locally
+
+```
+npm run develop
+# or
+yarn develop
+```
+
+Seeding
+
+- Development-only seed runs in `src/index.ts` bootstrap. If no `simple-product` entries exist, three examples are created. It will not run in production.
+
+REST testing
+
+- See `docs/products.api.md` and `requests/products.http` for examples.
+- Reminder: set Public role read permissions for `simple-product` if you want unauthenticated GETs, otherwise use an API token/server-to-server.
+
+Strapi Cloud note
+
+- If your cloud environment does not execute bootstrap in production, run a one-time local seed by starting the app locally and/or creating products via the provided requests.
