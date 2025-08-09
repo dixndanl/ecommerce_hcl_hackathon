@@ -31,6 +31,9 @@ export const sequelize = databaseUrl
 export const User = defineUser(sequelize, DataTypes);
 export const Address = defineAddress(sequelize, DataTypes);
 
+// Associations
+User.hasMany(Address, { foreignKey: 'userId', as: 'addresses', onDelete: 'CASCADE' });
+Address.belongsTo(User, { foreignKey: 'userId', as: 'user' });
 
 export async function syncAndSeed() {
   await sequelize.authenticate();
