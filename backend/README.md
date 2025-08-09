@@ -49,6 +49,27 @@ curl -s -X POST http://localhost:3000/auth/login \
   -d '{"email":"admin@example.com","password":"adminpass"}'
 ```
 
+Request body
+```json
+{
+  "email": "admin@example.com",
+  "password": "adminpass"
+}
+```
+
+Success response
+```json
+{
+  "token": "<jwt>",
+  "user": {
+    "id": "d651dd1b-b51d-4b25-a71b-00c276fd4fba",
+    "email": "admin@example.com",
+    "role": "admin",
+    "name": "Admin User"
+  }
+}
+```
+
 The first run seeds two users into the DB: `admin@example.com`/`adminpass`, `user@example.com`/`userpass`.
 
 Call protected route:
