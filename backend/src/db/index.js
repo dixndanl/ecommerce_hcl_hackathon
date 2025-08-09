@@ -2,11 +2,16 @@ import { Sequelize, DataTypes } from 'sequelize';
 import bcrypt from 'bcryptjs';
 
 const databaseUrl = process.env.DATABASE_URL;
+const isSslRequired =
+  String(process.env.DB_SSL || '').toLowerCase() === 'true' ||
+  (databaseUrl && /sslmode=require/i.test(databaseUrl));
+const dialectOptions = isSslRequired ? { ssl: { require: true, rejectUnauthorized: false } } : {};
 
 export const sequelize = databaseUrl
   ? new Sequelize(databaseUrl, {
       dialect: 'postgres',
       logging: false,
+      dialectOptions,
     })
   : new Sequelize(
       process.env.DB_NAME || 'ecommerce',
@@ -17,6 +22,7 @@ export const sequelize = databaseUrl
         port: Number(process.env.DB_PORT || 5432),
         dialect: 'postgres',
         logging: false,
+        dialectOptions,
       }
     );
 
