@@ -1,7 +1,9 @@
 import { updateUserProfile, addAddress, listAddresses, updateAddress, deleteAddress } from '../services/user.service.js';
+import { getOrCreateCart } from '../services/cart.service.js';
 
-export function getProfile(req, res) {
-  return res.json({ user: req.user });
+export async function getProfile(req, res) {
+  const cart = await getOrCreateCart(req.user.sub);
+  return res.json({ user: req.user, cartId: cart.id });
 }
 
 export async function updateProfile(req, res) {

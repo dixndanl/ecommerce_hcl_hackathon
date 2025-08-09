@@ -39,6 +39,11 @@ export const CartItem = defineCartItem(sequelize, DataTypes);
 User.hasMany(Address, { foreignKey: 'userId', as: 'addresses', onDelete: 'CASCADE' });
 Address.belongsTo(User, { foreignKey: 'userId', as: 'user' });
 
+User.hasOne(Cart, { foreignKey: 'userId', as: 'cart', onDelete: 'CASCADE' });
+Cart.belongsTo(User, { foreignKey: 'userId', as: 'user' });
+Cart.hasMany(CartItem, { foreignKey: 'cartId', as: 'items', onDelete: 'CASCADE' });
+CartItem.belongsTo(Cart, { foreignKey: 'cartId', as: 'cart' });
+
 export async function syncAndSeed() {
   await sequelize.authenticate();
   await sequelize.sync();
