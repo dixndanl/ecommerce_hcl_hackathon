@@ -23,7 +23,7 @@ export async function updateUserProfile(userId, updates) {
   if (!columns.phone) {
     delete payload.phone;
   }
-  const [count] = await User.update(payload, { where: { id: userId } });
+  const [count] = await User.update(payload, { where: { id: userId }, fields: Object.keys(payload) });
   if (count === 0) throw new Error('User not found');
   return User.findByPk(userId, { attributes: ['id', 'email', 'name', 'role'] });
 }
