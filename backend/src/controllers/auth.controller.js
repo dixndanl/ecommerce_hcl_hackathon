@@ -10,6 +10,7 @@ export async function login(req, res) {
     if (err && err.code === 'INVALID_CREDENTIALS') {
       return res.status(401).json({ error: 'Invalid credentials' });
     }
+    console.error(err);
     return res.status(500).json({ error: 'Internal server error' });
   }
 }

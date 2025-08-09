@@ -1,10 +1,27 @@
-import { Address, User } from '../db/index.js';
+import { Address, User, sequelize } from '../db/index.js';
+
+let cachedUserTableColumns = null;
+async function ensureUserTableColumns() {
+  if (cachedUserTableColumns) return cachedUserTableColumns;
+  try {
+    const qi = sequelize.getQueryInterface();
+    cachedUserTableColumns = await qi.describeTable('users');
+  } catch (_) {
+    cachedUserTableColumns = {};
+  }
+  return cachedUserTableColumns;
+}
 
 export async function updateUserProfile(userId, updates) {
   const allowed = ['name', 'phone'];
   const payload = {};
   for (const key of allowed) {
     if (updates[key] !== undefined) payload[key] = updates[key];
+  }
+  // Guard against DBs that don't have the 'phone' column yet
+  const columns = await ensureUserTableColumns();
+  if (!columns.phone) {
+    delete payload.phone;
   }
   const [count] = await User.update(payload, { where: { id: userId } });
   if (count === 0) throw new Error('User not found');

@@ -5,7 +5,11 @@ import { User } from '../db/index.js';
 const JWT_SECRET = process.env.JWT_SECRET || 'dev-secret-change-me';
 
 export async function authenticateUser(email, password) {
-  const record = await User.findOne({ where: { email: String(email).toLowerCase() } });
+  // Restrict selected columns to avoid selecting non-existent DB columns (e.g., phone)
+  const record = await User.findOne({
+    where: { email: String(email).toLowerCase() },
+    attributes: ['id', 'email', 'role', 'name', 'passwordHash'],
+  });
   if (!record) {
     const err = new Error('Invalid credentials');
     err.code = 'INVALID_CREDENTIALS';
@@ -18,7 +22,8 @@ export async function authenticateUser(email, password) {
     throw err;
   }
 
-  const safeUser = { id: record.id, email: record.email, role: record.role, name: record.name };
+  // Include phone as null to satisfy clients expecting it, without touching DB schema
+  const safeUser = { id: record.id, email: record.email, role: record.role, name: record.name, phone: null };
   const payload = { sub: safeUser.id, email: safeUser.email, role: safeUser.role, name: safeUser.name };
   const token = jwt.sign(payload, JWT_SECRET, { algorithm: 'HS256', expiresIn: '1h' });
   return { token, user: safeUser };
