@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_seo_meta",
+  "info": { "displayName": "SEO", "icon": "search" },
+  "attributes": {
+    "title": { "type": "string" },
+    "description": { "type": "text" },
+    "keywords": { "type": "string" },
+    "canonicalUrl": { "type": "string" },
+    "ogImage": { "type": "media", "allowedTypes": ["images"], "multiple": false }
+  }
+}
+
+

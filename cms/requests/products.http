@@ -1,0 +1,39 @@
+@baseUrl = http://localhost:1337
+@token = YOUR_API_TOKEN
+
+### Create simple product
+POST {{baseUrl}}/api/simple-products
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "data": {
+    "title": "Cotton T-Shirt",
+    "productType": "physical",
+    "sku": "TSHIRT-HTTP-01",
+    "price": 899,
+    "currency": "INR",
+    "status": "active",
+    "seo": {"title": "Cotton T-Shirt", "description": "Classic cotton tee"}
+  }
+}
+
+### List active products with pagination and populate
+GET {{baseUrl}}/api/simple-products?filters[status][$eq]=active&pagination[page]=1&pagination[pageSize]=24&sort=title:asc&populate=images,thumbnail
+
+### Get by id
+GET {{baseUrl}}/api/simple-products/1
+
+### Get by slug
+GET {{baseUrl}}/api/simple-products?filters[slug][$eq]=cotton-t-shirt
+
+### Update minimal
+PUT {{baseUrl}}/api/simple-products/1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "data": {"price": 999}
+}
+
+
