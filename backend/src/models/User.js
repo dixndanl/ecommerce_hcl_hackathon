@@ -17,6 +17,10 @@ export default function defineUser(sequelize, DataTypes) {
         type: DataTypes.STRING,
         allowNull: false,
       },
+      phone: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
       role: {
         type: DataTypes.ENUM('admin', 'user'),
         defaultValue: 'user',
