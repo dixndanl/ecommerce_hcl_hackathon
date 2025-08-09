@@ -82,3 +82,25 @@ Admin-only route:
 ```sh
 curl -s http://localhost:3000/api/admin -H "authorization: Bearer $TOKEN"
 ```
+
+### Get profile
+
+Request
+```http
+GET /profile
+Authorization: Bearer <token>
+```
+
+Response
+```json
+{
+  "user": {
+    "sub": "d651dd1b-b51d-4b25-a71b-00c276fd4fba",
+    "email": "admin@example.com",
+    "role": "admin",
+    "name": "Admin User",
+    "iat": 1754729957,
+    "exp": 1754733557
+  }
+}
+```
