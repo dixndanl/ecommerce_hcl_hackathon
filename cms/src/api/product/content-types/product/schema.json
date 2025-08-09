@@ -4,11 +4,46 @@
   "info": {
     "singularName": "product",
     "pluralName": "products",
-    "displayName": "Product"
+    "displayName": "Product",
+    "description": "Simple product with core info and metadata (no variants)"
   },
-  "options": {
-    "draftAndPublish": true
-  },
-  "pluginOptions": {},
-  "attributes": {}
+  "options": { "draftAndPublish": true },
+  "attributes": {
+    "title": { "type": "string", "required": true },
+    "slug": { "type": "uid", "targetField": "title", "required": true, "unique": true },
+    "productType": {
+      "type": "enumeration",
+      "enum": ["physical", "digital", "service", "bundle"],
+      "default": "physical",
+      "required": true
+    },
+    "sku": { "type": "string", "unique": true },
+    "barcode": { "type": "string" },
+    "description": { "type": "richtext" },
+    "price": { "type": "decimal", "required": true },
+    "currency": {
+      "type": "enumeration",
+      "enum": ["INR", "USD", "EUR", "GBP", "AUD", "CAD"],
+      "default": "INR",
+      "required": true
+    },
+    "compareAt": { "type": "decimal" },
+    "images": { "type": "media", "multiple": true, "allowedTypes": ["images"] },
+    "thumbnail": { "type": "media", "multiple": false, "allowedTypes": ["images"] },
+    "inventory": { "type": "integer", "default": 0 },
+    "inventoryPolicy": { "type": "enumeration", "enum": ["deny", "continue"], "default": "deny" },
+    "requiresShipping": { "type": "boolean", "default": true },
+    "weight": { "type": "decimal" },
+    "weightUnit": { "type": "enumeration", "enum": ["g", "kg", "lb"], "default": "kg" },
+    "length": { "type": "decimal" },
+    "width": { "type": "decimal" },
+    "height": { "type": "decimal" },
+    "dimensionUnit": { "type": "enumeration", "enum": ["mm", "cm", "in"], "default": "cm" },
+    "catalogStatus": { "type": "enumeration", "enum": ["draft", "active", "archived"], "default": "draft", "required": true },
+    "tags": { "type": "json" },
+    "seo": { "type": "component", "repeatable": false, "component": "seo.meta" },
+    "meta": { "type": "json" }
+  }
 }
+
+
