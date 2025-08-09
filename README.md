@@ -1,5 +1,73 @@
 # ecommerce_hcl_hackathon
 
+## Quickstart (Backend)
+
+Prerequisites
+- Node >= 20, Postgres running (local or cloud)
+
+Setup
+1) Copy env and configure
+```
+cd backend
+cp env.sample .env
+# set DB_*, JWT_SECRET, CLIENT_ORIGIN, STRAPI_BASE_URL, STRAPI_API_TOKEN (if needed)
+```
+2) Install deps and run
+```
+npm install
+npm run dev
+# server: http://localhost:3000  | health: http://localhost:3000/health
+```
+
+Auth flow
+- Signup (create user)
+```
+curl -X POST http://localhost:3000/auth/signup \
+  -H "Content-Type: application/json" \
+  -d '{"email":"user@example.com","name":"User","password":"P@ssw0rd123"}'
+```
+- Login (get JWT)
+```
+curl -X POST http://localhost:3000/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"email":"user@example.com","password":"P@ssw0rd123"}'
+```
+Use the returned token as: `Authorization: Bearer <jwt>`
+
+Common calls
+- Public products
+```
+curl http://localhost:3000/products
+```
+- Profile (auth)
+```
+curl http://localhost:3000/profile -H "Authorization: Bearer <jwt>"
+```
+- Addresses (auth)
+```
+curl -X POST http://localhost:3000/addresses \
+  -H "Authorization: Bearer <jwt>" -H "Content-Type: application/json" \
+  -d '{"line1":"123 MG Road","city":"Bengaluru","postalCode":"560001","isDefault":true}'
+```
+- Cart (auth)
+```
+curl -X POST http://localhost:3000/cart/items \
+  -H "Authorization: Bearer <jwt>" -H "Content-Type: application/json" \
+  -d '{"productId":"1","productTitle":"Cotton T-Shirt","price":899,"currency":"INR","quantity":1}'
+```
+- Checkout (auth)
+```
+curl -X POST http://localhost:3000/orders/checkout \
+  -H "Authorization: Bearer <jwt>" -H "Content-Type: application/json" \
+  -d '{"shippingAddressId":"<address-uuid>","paymentMethod":"cod"}'
+```
+
+Notes
+- CORS: set `CLIENT_ORIGIN` in `.env`. `*` allows all (no credentials); otherwise only that origin, with credentials.
+- Rate limiting: applied only to `POST /auth/login` (20 req / 15 minutes per IP).
+- Security headers: Helmet enabled. Use strong `JWT_SECRET` in production.
+
+
 Project Design Document — E-commerce App
 
 1. Project overview
