@@ -120,3 +120,48 @@ Response
   }
 }
 ```
+
+### Private API
+
+Request
+```http
+GET /api/private
+Authorization: Bearer <token>
+```
+
+Success response
+```json
+{
+  "message": "This is a protected resource",
+  "sub": "<user-id>"
+}
+```
+
+Errors
+```json
+{ "error": "Missing bearer token" }
+{ "error": "Invalid or expired token" }
+```
+
+### Admin API
+
+Request
+```http
+GET /api/admin
+Authorization: Bearer <token>
+```
+
+Success response
+```json
+{
+  "message": "Admin-only data",
+  "sub": "<user-id>"
+}
+```
+
+Errors
+```json
+{ "error": "Forbidden" }
+{ "error": "Missing bearer token" }
+{ "error": "Invalid or expired token" }
+```
