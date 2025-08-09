@@ -62,7 +62,7 @@ Feel free to check out the [Strapi GitHub repository](https://github.com/strapi/
 
 ### Products
 
-- A minimal product content type has been added as `simple-product` (existing `product` type was present). It includes fields: `title`, `slug`, `productType`, `sku`, `barcode`, `description`, `price`, `currency`, `compareAt`, media `images`/`thumbnail`, inventory fields, dimensions, `status`, `tags`, `seo` (component), and `meta`.
+- A minimal product content type has been added as `simple-product` (existing `product` type was present). It includes fields: `title`, `slug`, `productType`, `sku`, `barcode`, `description`, `price`, `currency`, `compareAt`, media `images`/`thumbnail`, inventory fields, dimensions, `catalogStatus`, `tags`, `seo` (component), and `meta`.
 - SEO component `seo.meta` lives at `src/components/seo/meta.json` with `title`, `description`, `keywords`, `canonicalUrl`, and `ogImage`.
 
 Run locally

@@ -451,6 +451,11 @@ export interface ApiSimpleProductSimpleProduct
   };
   attributes: {
     barcode: Schema.Attribute.String;
+    catalogStatus: Schema.Attribute.Enumeration<
+      ['draft', 'active', 'archived']
+    > &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<'draft'>;
     compareAt: Schema.Attribute.Decimal;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -490,9 +495,6 @@ export interface ApiSimpleProductSimpleProduct
     slug: Schema.Attribute.UID<'title'> &
       Schema.Attribute.Required &
       Schema.Attribute.Unique;
-    status: Schema.Attribute.Enumeration<['draft', 'active', 'archived']> &
-      Schema.Attribute.Required &
-      Schema.Attribute.DefaultTo<'draft'>;
     tags: Schema.Attribute.JSON;
     thumbnail: Schema.Attribute.Media<'images'>;
     title: Schema.Attribute.String & Schema.Attribute.Required;
