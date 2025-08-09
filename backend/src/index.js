@@ -4,6 +4,7 @@ import morgan from 'morgan';
 import cors from 'cors';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
+import { sequelize, User, syncAndSeed } from './db/index.js';
 
 const app = express();
 
@@ -23,20 +24,8 @@ app.use(express.json());
 // JWT secret
 const JWT_SECRET = process.env.JWT_SECRET || 'dev-secret-change-me';
 
-// In-memory users (email keyed). Seeded at startup for demo.
-// Passwords are hashed at runtime (slow hash) for clarity; for production seed pre-hashed.
-const users = new Map();
-function seedUsers() {
-  const seed = [
-    { id: 'u_admin', email: 'admin@example.com', password: 'adminpass', role: 'admin', name: 'Admin User' },
-    { id: 'u_user', email: 'user@example.com', password: 'userpass', role: 'user', name: 'Normal User' },
-  ];
-  seed.forEach((u) => {
-    const passwordHash = bcrypt.hashSync(u.password, 10);
-    users.set(u.email.toLowerCase(), { id: u.id, email: u.email.toLowerCase(), passwordHash, role: u.role, name: u.name });
-  });
-}
-seedUsers();
+// Initialize database
+await syncAndSeed();
 
 function generateJwt(user) {
   const payload = { sub: user.id, email: user.email, role: user.role, name: user.name };
@@ -74,12 +63,13 @@ app.get('/health', (_req, res) => {
 app.post('/auth/login', async (req, res) => {
   const { email, password } = req.body || {};
   if (!email || !password) return res.status(400).json({ error: 'email and password are required' });
-  const record = users.get(String(email).toLowerCase());
+  const record = await User.findOne({ where: { email: String(email).toLowerCase() } });
   if (!record) return res.status(401).json({ error: 'Invalid credentials' });
   const ok = await bcrypt.compare(password, record.passwordHash);
   if (!ok) return res.status(401).json({ error: 'Invalid credentials' });
-  const token = generateJwt(record);
-  res.json({ token, user: { id: record.id, email: record.email, role: record.role, name: record.name } });
+  const safeUser = { id: record.id, email: record.email, role: record.role, name: record.name };
+  const token = generateJwt(safeUser);
+  res.json({ token, user: safeUser });
 });
 
 app.get('/profile', authenticateJwt, (req, res) => {
