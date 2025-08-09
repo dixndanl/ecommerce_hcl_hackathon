@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { apiFetch, DEFAULT_IMAGE_URL } from '../api';
+import { apiFetch, DEFAULT_IMAGE_URL, ensureAbsoluteImageUrl } from '../api';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Card from '@mui/material/Card';
@@ -31,12 +31,13 @@ function Products({ user }) {
         const normalized = Array.isArray(productsResponse?.data)
           ? productsResponse.data.map((entry) => {
               const id = entry.id;
-              const attrs = entry.attributes || {};
+              const attrs = entry || {};
               const title = attrs.title || attrs.name || 'Untitled';
               const description = (typeof attrs.description === 'string') ? attrs.description : '';
               const price = Number(attrs.price ?? 0);
               const category = Array.isArray(attrs.tags) && attrs.tags.length ? String(attrs.tags[0]) : 'General';
-              const image = DEFAULT_IMAGE_URL;
+              const externalImageUrl = attrs?.meta?.externalImageUrl;
+              const image = externalImageUrl ? ensureAbsoluteImageUrl(externalImageUrl) : DEFAULT_IMAGE_URL;
               return { id, name: title, description, price, category, image };
             })
           : Array.isArray(productsResponse) ? productsResponse : [];
