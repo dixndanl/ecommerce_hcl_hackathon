@@ -17,12 +17,12 @@ export default {
    * run jobs, or perform some special logic.
    */
   bootstrap: async ({ strapi } /*: { strapi: Core.Strapi }*/) => {
-    // Development-only seed for simple products when no records exist
+    // Development-only seed for products when no records exist
     if (process.env.NODE_ENV !== 'production') {
       try {
-        const count = await strapi.entityService.count('api::simple-product.simple-product');
+        const count = await strapi.entityService.count('api::product.product');
         if (count === 0) {
-          await strapi.entityService.create('api::simple-product.simple-product', {
+          await strapi.entityService.create('api::product.product', {
             data: {
               title: 'Cotton T-Shirt',
               productType: 'physical',
@@ -39,7 +39,7 @@ export default {
               publishedAt: new Date().toISOString()
             },
           });
-          await strapi.entityService.create('api::simple-product.simple-product', {
+          await strapi.entityService.create('api::product.product', {
             data: {
               title: 'Digital Lightroom Preset Pack',
               productType: 'digital',
@@ -53,7 +53,7 @@ export default {
               publishedAt: new Date().toISOString()
             },
           });
-          await strapi.entityService.create('api::simple-product.simple-product', {
+          await strapi.entityService.create('api::product.product', {
             data: {
               title: 'Home Cleaning Service',
               productType: 'service',
@@ -67,10 +67,10 @@ export default {
               publishedAt: new Date().toISOString()
             },
           });
-          strapi.log.info('Seeded initial simple products.');
+          strapi.log.info('Seeded initial products.');
         }
       } catch (e: any) {
-        strapi.log.warn('Simple Product seed skipped: ' + e.message);
+        strapi.log.warn('Product seed skipped: ' + e.message);
       }
     }
   },

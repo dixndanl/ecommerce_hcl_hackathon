@@ -1,14 +1,14 @@
 ### Product API examples
 
-Note: This project includes a collection type named `simple-product` because an existing `product` type already exists in this repo. Endpoints are therefore `/api/simple-products`.
+Note: The collection type is now `product`. Endpoints are `/api/products`.
 
 - Base URL: `http://localhost:1337`
 - Auth: Use an API token or enable Public role permissions for `simple-product` read if appropriate.
 
-POST /api/simple-products
+POST /api/products
 
 ```
-curl -X POST http://localhost:1337/api/simple-products \
+curl -X POST http://localhost:1337/api/products \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer YOUR_API_TOKEN" \
   -d '{
@@ -24,23 +24,23 @@ curl -X POST http://localhost:1337/api/simple-products \
   }'
 ```
 
-GET /api/simple-products with filters, pagination, sort, and populate
+GET /api/products with filters, pagination, sort, and populate
 
 ```
-curl "http://localhost:1337/api/simple-products?filters[catalogStatus][$eq]=active&pagination[page]=1&pagination[pageSize]=24&sort=title:asc&populate=images,thumbnail"
+curl "http://localhost:1337/api/products?filters[catalogStatus][$eq]=active&pagination[page]=1&pagination[pageSize]=24&sort=title:asc&populate=images,thumbnail"
 ```
 
-GET /api/simple-products/:id and by slug
+GET /api/products/:id and by slug
 
 ```
-curl http://localhost:1337/api/simple-products/1
-curl "http://localhost:1337/api/simple-products?filters[slug][$eq]=cotton-t-shirt"
+curl http://localhost:1337/api/products/1
+curl "http://localhost:1337/api/products?filters[slug][$eq]=cotton-t-shirt"
 ```
 
-PUT /api/simple-products/:id (minimal update)
+PUT /api/products/:id (minimal update)
 
 ```
-curl -X PUT http://localhost:1337/api/simple-products/1 \
+curl -X PUT http://localhost:1337/api/products/1 \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer YOUR_API_TOKEN" \
   -d '{"data": {"price": 999}}'

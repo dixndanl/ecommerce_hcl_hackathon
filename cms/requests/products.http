@@ -1,8 +1,8 @@
 @baseUrl = http://localhost:1337
 @token = YOUR_API_TOKEN
 
-### Create simple product
-POST {{baseUrl}}/api/simple-products
+### Create product
+POST {{baseUrl}}/api/products
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -19,16 +19,16 @@ Content-Type: application/json
 }
 
 ### List active products with pagination and populate
-GET {{baseUrl}}/api/simple-products?filters[catalogStatus][$eq]=active&pagination[page]=1&pagination[pageSize]=24&sort=title:asc&populate=images,thumbnail
+GET {{baseUrl}}/api/products?filters[catalogStatus][$eq]=active&pagination[page]=1&pagination[pageSize]=24&sort=title:asc&populate=images,thumbnail
 
 ### Get by id
-GET {{baseUrl}}/api/simple-products/1
+GET {{baseUrl}}/api/products/1
 
 ### Get by slug
-GET {{baseUrl}}/api/simple-products?filters[slug][$eq]=cotton-t-shirt
+GET {{baseUrl}}/api/products?filters[slug][$eq]=cotton-t-shirt
 
 ### Update minimal
-PUT {{baseUrl}}/api/simple-products/1
+PUT {{baseUrl}}/api/products/1
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
