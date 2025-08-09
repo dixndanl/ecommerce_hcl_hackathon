@@ -1,6 +1,6 @@
 # Ecommerce Backend (Express + JWT)
 
-Minimal Express backend with local login and JWT-based auth.
+Minimal Express backend with local login and JWT-based auth, using Sequelize + PostgreSQL for users.
 
 ## Quick start (inside a container shell)
 
@@ -27,6 +27,7 @@ App listens on `PORT` (default 3000). Health: `GET /health`.
 - `BASE_URL`: Public base URL of this API (e.g., http://localhost:3000)
 - `CLIENT_ORIGIN`: Allowed CORS origin (frontend URL)
 - `JWT_SECRET`: random secret used to sign tokens (HS256)
+- `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER`, `DB_PASSWORD` (or `DATABASE_URL`)
 
 ## Routes
 
@@ -47,6 +48,8 @@ curl -s -X POST http://localhost:3000/auth/login \
   -H 'content-type: application/json' \
   -d '{"email":"admin@example.com","password":"adminpass"}'
 ```
+
+The first run seeds two users into the DB: `admin@example.com`/`adminpass`, `user@example.com`/`userpass`.
 
 Call protected route:
 ```sh
