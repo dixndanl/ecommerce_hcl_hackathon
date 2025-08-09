@@ -9,4 +9,4 @@ RUN npm install --omit=dev --no-audit --no-fund && npm cache clean --force
 COPY src ./src
 USER node
 EXPOSE 3000
-CMD ["node", "src/index.js"]
+CMD ["node", "src/server.js"]

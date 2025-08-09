@@ -3,11 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "description": "MVP B2B ecommerce backend with Auth0 authentication (Express)",
-  "main": "src/index.js",
+  "main": "src/server.js",
   "type": "module",
   "scripts": {
-    "dev": "node --watch src/index.js",
-    "start": "node src/index.js"
+    "dev": "node --watch src/server.js",
+    "start": "node src/server.js"
   },
   "engines": {
     "node": ">=20"
