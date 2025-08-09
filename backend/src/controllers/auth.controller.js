@@ -1,4 +1,4 @@
-import { authenticateUser } from '../services/auth.service.js';
+import { authenticateUser, signupUser } from '../services/auth.service.js';
 
 export async function login(req, res) {
   const { email, password } = req.body || {};
@@ -17,6 +17,16 @@ export async function login(req, res) {
 export function logout(_req, res) {
   // Stateless JWT logout: client must discard the token
   return res.json({ message: 'Logged out' });
+}
+
+export async function signup(req, res) {
+  try {
+    const { token, user } = await signupUser(req.body || {});
+    return res.status(201).json({ token, user });
+  } catch (err) {
+    const status = err && err.status ? err.status : 500;
+    return res.status(status).json({ error: 'Signup failed', details: err?.message || err });
+  }
 }
 
 

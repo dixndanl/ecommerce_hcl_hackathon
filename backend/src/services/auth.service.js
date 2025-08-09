@@ -24,4 +24,19 @@ export async function authenticateUser(email, password) {
   return { token, user: safeUser };
 }
 
+export async function signupUser({ email, name, password, phone }) {
+  const existing = await User.findOne({ where: { email: String(email).toLowerCase() } });
+  if (existing) {
+    const err = new Error('Email already registered');
+    err.status = 409;
+    throw err;
+  }
+  const passwordHash = await bcrypt.hash(password, 10);
+  const created = await User.create({ email: String(email).toLowerCase(), name, passwordHash, role: 'user', phone: phone || null });
+  const safeUser = { id: created.id, email: created.email, role: created.role, name: created.name };
+  const payload = { sub: safeUser.id, email: safeUser.email, role: safeUser.role, name: safeUser.name };
+  const token = jwt.sign(payload, JWT_SECRET, { algorithm: 'HS256', expiresIn: '1h' });
+  return { token, user: safeUser };
+}
+
 
