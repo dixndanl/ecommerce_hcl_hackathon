@@ -34,6 +34,7 @@ App listens on `PORT` (default 3000). Health: `GET /health`.
 - `GET /health`: health probe
 - `GET /`: public
 - `POST /auth/login`: body `{ email, password }` returns `{ token, user }`
+- `POST /auth/logout`: stateless; client discards token
 - `GET /profile`: protected (JWT), returns authenticated user claims
 - `GET /api/private`: protected (JWT)
 - `GET /api/admin`: protected (JWT) + admin role only
@@ -81,6 +82,21 @@ curl -s http://localhost:3000/api/private -H "authorization: Bearer $TOKEN"
 Admin-only route:
 ```sh
 curl -s http://localhost:3000/api/admin -H "authorization: Bearer $TOKEN"
+```
+
+Logout:
+```sh
+curl -s -X POST http://localhost:3000/auth/logout
+```
+
+Logout request
+```http
+POST /auth/logout
+```
+
+Logout response
+```json
+{ "message": "Logged out" }
 ```
 
 ### Get profile
