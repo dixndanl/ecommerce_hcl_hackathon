@@ -1,5 +1,6 @@
 import { Sequelize, DataTypes } from 'sequelize';
 import bcrypt from 'bcryptjs';
+import defineUser from '../models/User.js';
 
 const databaseUrl = process.env.DATABASE_URL;
 const isSslRequired =
@@ -26,40 +27,7 @@ export const sequelize = databaseUrl
       }
     );
 
-export const User = sequelize.define(
-  'User',
-  {
-    id: {
-      type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
-      primaryKey: true,
-    },
-    email: {
-      type: DataTypes.STRING,
-      unique: true,
-      allowNull: false,
-      validate: { isEmail: true },
-    },
-    name: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    role: {
-      type: DataTypes.ENUM('admin', 'user'),
-      defaultValue: 'user',
-      allowNull: false,
-    },
-    passwordHash: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-  },
-  {
-    tableName: 'users',
-    timestamps: true,
-    indexes: [{ unique: true, fields: ['email'] }],
-  }
-);
+export const User = defineUser(sequelize, DataTypes);
 
 export async function syncAndSeed() {
   await sequelize.authenticate();
