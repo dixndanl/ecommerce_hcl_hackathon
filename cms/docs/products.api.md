@@ -18,7 +18,7 @@ curl -X POST http://localhost:1337/api/simple-products \
       "sku": "TSHIRT-002",
       "price": 899,
       "currency": "INR",
-      "status": "active",
+      "catalogStatus": "active",
       "seo": {"title": "Cotton T-Shirt", "description": "Classic cotton tee"}
     }
   }'
@@ -27,7 +27,7 @@ curl -X POST http://localhost:1337/api/simple-products \
 GET /api/simple-products with filters, pagination, sort, and populate
 
 ```
-curl "http://localhost:1337/api/simple-products?filters[status][$eq]=active&pagination[page]=1&pagination[pageSize]=24&sort=title:asc&populate=images,thumbnail"
+curl "http://localhost:1337/api/simple-products?filters[catalogStatus][$eq]=active&pagination[page]=1&pagination[pageSize]=24&sort=title:asc&populate=images,thumbnail"
 ```
 
 GET /api/simple-products/:id and by slug

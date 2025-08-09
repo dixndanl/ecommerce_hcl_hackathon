@@ -39,7 +39,7 @@
     "width": { "type": "decimal" },
     "height": { "type": "decimal" },
     "dimensionUnit": { "type": "enumeration", "enum": ["mm", "cm", "in"], "default": "cm" },
-    "status": { "type": "enumeration", "enum": ["draft", "active", "archived"], "default": "draft", "required": true },
+    "catalogStatus": { "type": "enumeration", "enum": ["draft", "active", "archived"], "default": "draft", "required": true },
     "tags": { "type": "json" },
     "seo": { "type": "component", "repeatable": false, "component": "seo.meta" },
     "meta": { "type": "json" }

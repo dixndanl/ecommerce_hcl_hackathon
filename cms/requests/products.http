@@ -13,13 +13,13 @@ Content-Type: application/json
     "sku": "TSHIRT-HTTP-01",
     "price": 899,
     "currency": "INR",
-    "status": "active",
+    "catalogStatus": "active",
     "seo": {"title": "Cotton T-Shirt", "description": "Classic cotton tee"}
   }
 }
 
 ### List active products with pagination and populate
-GET {{baseUrl}}/api/simple-products?filters[status][$eq]=active&pagination[page]=1&pagination[pageSize]=24&sort=title:asc&populate=images,thumbnail
+GET {{baseUrl}}/api/simple-products?filters[catalogStatus][$eq]=active&pagination[page]=1&pagination[pageSize]=24&sort=title:asc&populate=images,thumbnail
 
 ### Get by id
 GET {{baseUrl}}/api/simple-products/1

@@ -32,7 +32,7 @@ export default {
               currency: 'INR',
               inventory: 25,
               requiresShipping: true,
-              status: 'active',
+              catalogStatus: 'active',
               tags: ['tshirt', 'cotton'],
               seo: { title: 'Cotton T-Shirt', description: 'Classic cotton tee' },
               meta: { material: '100% cotton' },
@@ -48,7 +48,7 @@ export default {
               price: 999,
               currency: 'INR',
               requiresShipping: false,
-              status: 'active',
+              catalogStatus: 'active',
               tags: ['digital', 'preset'],
               publishedAt: new Date().toISOString()
             },
@@ -62,7 +62,7 @@ export default {
               price: 1499,
               currency: 'INR',
               requiresShipping: false,
-              status: 'active',
+              catalogStatus: 'active',
               tags: ['service', 'home'],
               publishedAt: new Date().toISOString()
             },
