@@ -7,11 +7,12 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import Badge from '@mui/material/Badge';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import { Link as RouterLink } from 'react-router-dom';  
+import { Link as RouterLink, useNavigate } from 'react-router-dom';  
 
 
 function Navbar({ user, onLogout }) {
   const [cartCount, setCartCount] = React.useState(0);
+  const navigate = useNavigate();
 
   React.useEffect(() => {
     const updateCartCount = () => {
@@ -45,7 +46,7 @@ function Navbar({ user, onLogout }) {
           {user && <Button color="inherit" component={RouterLink} to="/profile">My Profile</Button>}
           {!user && <Button color="inherit" component={RouterLink} to="/login">Login</Button>}
           {!user && <Button color="inherit" component={RouterLink} to="/register">Register</Button>}
-          {user && <Button color="inherit" onClick={() => { localStorage.removeItem('authToken'); onLogout(); }}>Logout</Button>}
+          {user && <Button color="inherit" onClick={() => { localStorage.removeItem('authToken'); onLogout(); navigate('/products'); }}>Logout</Button>}
         </Box>
       </Toolbar>
     </AppBar>
