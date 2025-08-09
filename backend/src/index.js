@@ -72,6 +72,11 @@ app.post('/auth/login', async (req, res) => {
   res.json({ token, user: safeUser });
 });
 
+// Stateless logout endpoint (client should discard token)
+app.post('/auth/logout', (req, res) => {
+  res.json({ message: 'Logged out' });
+});
+
 app.get('/profile', authenticateJwt, (req, res) => {
   res.json({ user: req.user });
 });
