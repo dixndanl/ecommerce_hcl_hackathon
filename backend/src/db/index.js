@@ -4,6 +4,8 @@ import defineUser from '../models/User.js';
 import defineAddress from '../models/Address.js';
 import defineCart from '../models/Cart.js';
 import defineCartItem from '../models/CartItem.js';
+import defineOrder from '../models/Order.js';
+import defineOrderItem from '../models/OrderItem.js';
 
 const databaseUrl = process.env.DATABASE_URL;
 const isSslRequired =
@@ -34,6 +36,8 @@ export const User = defineUser(sequelize, DataTypes);
 export const Address = defineAddress(sequelize, DataTypes);
 export const Cart = defineCart(sequelize, DataTypes);
 export const CartItem = defineCartItem(sequelize, DataTypes);
+export const Order = defineOrder(sequelize, DataTypes);
+export const OrderItem = defineOrderItem(sequelize, DataTypes);
 
 // Associations
 User.hasMany(Address, { foreignKey: 'userId', as: 'addresses', onDelete: 'CASCADE' });
@@ -43,6 +47,11 @@ User.hasOne(Cart, { foreignKey: 'userId', as: 'cart', onDelete: 'CASCADE' });
 Cart.belongsTo(User, { foreignKey: 'userId', as: 'user' });
 Cart.hasMany(CartItem, { foreignKey: 'cartId', as: 'items', onDelete: 'CASCADE' });
 CartItem.belongsTo(Cart, { foreignKey: 'cartId', as: 'cart' });
+
+User.hasMany(Order, { foreignKey: 'userId', as: 'orders', onDelete: 'CASCADE' });
+Order.belongsTo(User, { foreignKey: 'userId', as: 'user' });
+Order.hasMany(OrderItem, { foreignKey: 'orderId', as: 'items', onDelete: 'CASCADE' });
+OrderItem.belongsTo(Order, { foreignKey: 'orderId', as: 'order' });
 
 export async function syncAndSeed() {
   await sequelize.authenticate();
