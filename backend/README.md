@@ -1,167 +1,88 @@
-# Ecommerce Backend (Express + JWT)
+# Ecommerce Backend — Node/Express
 
-Minimal Express backend with local login and JWT-based auth, using Sequelize + PostgreSQL for users.
+### Overview
+Production-ready Express backend using JWT auth, Sequelize + Postgres, Zod validation, Helmet security, and CORS. It proxies products from Strapi and exposes authenticated endpoints for cart, checkout, orders, and profile/addresses.
 
-## Quick start (inside a container shell)
+### Tech stack
+- Node.js (Express)
+- Sequelize (Postgres)
+- Zod (validation)
+- Helmet, CORS, rate limiting
+- JWT (HS256)
 
-1) Mount your workspace and enter the container shell:
+### Features
+- Authentication: signup, login, logout; JWT issuance and verification
+- Products proxy (read-only): forwards to Strapi and returns Strapi response shape
+- Cart (auth): add/update/remove items; get cart with items
+- Orders (auth): create order from cart (checkout), get orders and order by id
+- Profile & Addresses (auth): read/update profile; address CRUD
 
+### Configuration
+Create `backend/.env` (copy from `env.sample`) and set:
+- `PORT=3000`
+- `CLIENT_ORIGIN=http://localhost:5173` (frontend origin)
+- `JWT_SECRET=<strong-random-secret>`
+- `STRAPI_BASE_URL=https://worthy-beauty-fe2c83a475.strapiapp.com` (CMS base)
+- `STRAPI_API_TOKEN=<optional if Strapi requires token>`
+- Database: either `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER`, `DB_PASSWORD`, `DB_SSL` or `DATABASE_URL`
+
+### Getting started
 ```sh
-docker run -it --rm -p 3000:3000 -v C:\Users\Administrator\Documents\ecommerce_hcl_hackathon\backend:/work -w /work node:22-alpine sh
-```
-
-2) Install dependencies and run:
-
-```sh
+cd backend
 npm install
 cp env.sample .env
-# edit .env with your JWT secret, port, origins
+# edit .env as per Configuration above
 npm run dev
+# server: http://localhost:3000  | health: http://localhost:3000/health
 ```
 
-App listens on `PORT` (default 3000). Health: `GET /health`.
-
-## Environment variables
-
-- `PORT`: API port (default 3000)
-- `BASE_URL`: Public base URL of this API (e.g., http://localhost:3000)
-- `CLIENT_ORIGIN`: Allowed CORS origin (frontend URL)
-- `JWT_SECRET`: random secret used to sign tokens (HS256)
-- `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER`, `DB_PASSWORD` (or `DATABASE_URL`)
-
-## Routes
-
-- `GET /health`: health probe
-- `GET /`: public
-- `POST /auth/login`: body `{ email, password }` returns `{ token, user }`
-- `POST /auth/logout`: stateless; client discards token
-- `GET /profile`: protected (JWT), returns authenticated user claims
-- `GET /api/private`: protected (JWT)
-- `GET /api/admin`: protected (JWT) + admin role only
-
-## Notes
-
-## Usage examples
-
-Login:
+Docker (optional)
 ```sh
-curl -s -X POST http://localhost:3000/auth/login \
-  -H 'content-type: application/json' \
-  -d '{"email":"admin@example.com","password":"adminpass"}'
+docker run -it --rm -p 3000:3000 -v %cd%:/work -w /work node:22-alpine sh
+# inside container
+npm install && npm run dev
 ```
 
-Request body
-```json
-{
-  "email": "admin@example.com",
-  "password": "adminpass"
-}
-```
+### API endpoints
+- Health: `GET /health`
+- Auth: `POST /auth/signup`, `POST /auth/login`, `POST /auth/logout`
+- User (auth): `GET /profile`, `PUT /profile`, addresses `GET/POST/PUT/DELETE /addresses`
+- Products: `GET /products`, `GET /products/:id`, `GET /products/slug/:slug` (Strapi proxy)
+- Cart (auth): `GET /cart`, `POST /cart/items`, `PUT /cart/items/:id`, `DELETE /cart/items/:id`, `DELETE /cart`
+- Orders (auth): `POST /orders/checkout`, `GET /orders`, `GET /orders/:id`
 
-Success response
-```json
-{
-  "token": "<jwt>",
-  "user": {
-    "id": "d651dd1b-b51d-4b25-a71b-00c276fd4fba",
-    "email": "admin@example.com",
-    "role": "admin",
-    "name": "Admin User"
-  }
-}
-```
-
-The first run seeds two users into the DB: `admin@example.com`/`adminpass`, `user@example.com`/`userpass`.
-
-Call protected route:
+### Example usage
+- Signup
 ```sh
-TOKEN=... # token from login response
-curl -s http://localhost:3000/api/private -H "authorization: Bearer $TOKEN"
+curl -X POST http://localhost:3000/auth/signup \
+  -H "Content-Type: application/json" \
+  -d '{"email":"user@example.com","name":"User","password":"P@ssw0rd123"}'
 ```
-
-Admin-only route:
+- Login (returns `{ token, user }`)
 ```sh
-curl -s http://localhost:3000/api/admin -H "authorization: Bearer $TOKEN"
+curl -X POST http://localhost:3000/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"email":"user@example.com","password":"P@ssw0rd123"}'
 ```
-
-Logout:
+- Add to cart (auth)
 ```sh
-curl -s -X POST http://localhost:3000/auth/logout
+curl -X POST http://localhost:3000/cart/items \
+  -H "Authorization: Bearer <jwt>" -H "Content-Type: application/json" \
+  -d '{"productId":"1","productTitle":"Cotton T-Shirt","price":899,"currency":"INR","quantity":1}'
+```
+- Checkout (auth)
+```sh
+curl -X POST http://localhost:3000/orders/checkout \
+  -H "Authorization: Bearer <jwt>" -H "Content-Type: application/json" \
+  -d '{"paymentMethod":"cod"}'
 ```
 
-Logout request
-```http
-POST /auth/logout
-```
-
-Logout response
+### Error format
 ```json
-{ "message": "Logged out" }
+{ "error": "Message", "details": "Optional details or validation info" }
 ```
 
-### Get profile
-
-Request
-```http
-GET /profile
-Authorization: Bearer <token>
-```
-
-Response
-```json
-{
-  "user": {
-    "sub": "d651dd1b-b51d-4b25-a71b-00c276fd4fba",
-    "email": "admin@example.com",
-    "role": "admin",
-    "name": "Admin User",
-    "iat": 1754729957,
-    "exp": 1754733557
-  }
-}
-```
-
-### Private API
-
-Request
-```http
-GET /api/private
-Authorization: Bearer <token>
-```
-
-Success response
-```json
-{
-  "message": "This is a protected resource",
-  "sub": "<user-id>"
-}
-```
-
-Errors
-```json
-{ "error": "Missing bearer token" }
-{ "error": "Invalid or expired token" }
-```
-
-### Admin API
-
-Request
-```http
-GET /api/admin
-Authorization: Bearer <token>
-```
-
-Success response
-```json
-{
-  "message": "Admin-only data",
-  "sub": "<user-id>"
-}
-```
-
-Errors
-```json
-{ "error": "Forbidden" }
-{ "error": "Missing bearer token" }
-{ "error": "Invalid or expired token" }
-```
+### Notes
+- CORS controlled by `CLIENT_ORIGIN`
+- Login rate limited (per-IP)
+- Strongly set `JWT_SECRET` in production
