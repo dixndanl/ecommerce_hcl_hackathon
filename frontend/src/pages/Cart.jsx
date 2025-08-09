@@ -10,15 +10,34 @@ import ListItemText from '@mui/material/ListItemText';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Alert from '@mui/material/Alert';
+import { apiFetch, DEFAULT_IMAGE_URL } from '../api';
 
 function Cart({ user }) {
   const [cart, setCart] = useState(() => JSON.parse(localStorage.getItem('cart') || '[]'));
   const navigate = useNavigate();
 
-  const handleCheckout = () => {
+  const handleCheckout = async () => {
     if (!user) {
       alert('Please login to checkout');
       return;
+    }
+    // Push local cart items to backend cart as items before navigating
+    try {
+      for (const item of cart) {
+        await apiFetch('/cart/items', {
+          method: 'POST',
+          body: JSON.stringify({
+            productId: String(item.id),
+            productTitle: item.name || item.title || 'Unknown',
+            price: Number(item.price || 0),
+            currency: 'INR',
+            quantity: Number(item.quantity || 1),
+            thumbnailUrl: item.image || DEFAULT_IMAGE_URL,
+          })
+        });
+      }
+    } catch (_err) {
+      // Non-blocking; continue to review page regardless
     }
     navigate('/review', { state: { cart, user } });
   };

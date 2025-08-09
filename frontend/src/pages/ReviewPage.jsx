@@ -1,6 +1,7 @@
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Box, Typography, Divider, List, ListItem, ListItemText, Checkbox, FormControlLabel } from '@mui/material';
+import { apiFetch } from '../api';
 
 function ReviewPage() {
   const location = useLocation();
@@ -28,27 +29,25 @@ function ReviewPage() {
       } else if (paymentMethod === 'UPI') {
         paymentInfo = `UPI: ${upiId}`;
       }
-      const res = await fetch('http://localhost:3001/api/orders', {
+      // Align with backend checkout: POST /orders/checkout (auth required)
+      const payload = {
+        // Optional: shippingAddressId, paymentMethod: 'cod'
+        paymentMethod: 'cod',
+        metadata: {
+          uiPaymentInfo: paymentInfo,
+          uiShippingAddress: shippingAddress,
+          uiDeliveryAddress: deliveryAddress,
+          uiCartSnapshot: Array.isArray(cart) ? cart : [],
+        },
+      };
+      const order = await apiFetch('/orders/checkout', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          email: user.email,
-          items: cart,
-          shippingAddress,
-          deliveryAddress,
-          paymentInfo
-        })
+        body: JSON.stringify(payload),
       });
-      const data = await res.json();
-      if (!res.ok) {
-        setError(data.error || 'Order failed');
-        setLoading(false);
-        return;
-      }
       setLoading(false);
-      navigate('/order-confirmation', { state: { order: data.order } });
+      navigate('/order-confirmation', { state: { order } });
     } catch (err) {
-      setError('Order failed');
+      setError(err.message || 'Order failed');
       setLoading(false);
     }
   };

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Container from '@mui/material/Container';
+import { apiFetch } from '../api';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
@@ -21,22 +22,16 @@ function Register({ setUser }) {
     setError('');
     setLoading(true);
     try {
-      const res = await fetch('http://localhost:3001/api/register', {
+      const { token, user } = await apiFetch('/auth/signup', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, email, password })
       });
-      const data = await res.json();
-      if (!res.ok) {
-        setError(data.error || 'Registration failed');
-        setLoading(false);
-        return;
-      }
-      setUser(data.user);
-      localStorage.setItem('user', JSON.stringify(data.user));
+      localStorage.setItem('authToken', token);
+      localStorage.setItem('user', JSON.stringify(user));
+      setUser(user);
       navigate('/products');
     } catch (err) {
-      setError('Registration failed');
+      setError(err.message || 'Registration failed');
     } finally {
       setLoading(false);
     }

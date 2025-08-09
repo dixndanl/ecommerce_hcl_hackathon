@@ -7,6 +7,7 @@ import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
+import { apiFetch } from '../api';
 
 function Orders({ user }) {
   const [orders, setOrders] = useState([]);
@@ -17,9 +18,9 @@ function Orders({ user }) {
   useEffect(() => {
     if (!user) return;
     setLoading(true);
-    fetch(`http://localhost:3001/api/orders?email=${encodeURIComponent(user.email)}`)
-      .then(res => res.json())
-      .then(data => {
+    apiFetch('/orders')
+      .then((data) => {
+        // Backend returns array of orders with items
         setOrders(Array.isArray(data) ? data : []);
         setLoading(false);
       })
@@ -29,27 +30,9 @@ function Orders({ user }) {
       });
   }, [user]);
 
-  const handleCancel = async (orderId) => {
-    if (!user) return;
-    setCancelling(orderId);
-    try {
-      const res = await fetch(`http://localhost:3001/api/orders/${orderId}`, {
-        method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: user.email })
-      });
-      if (!res.ok) {
-        setError('Failed to cancel order');
-      } else {
-        const ordersRes = await fetch(`http://localhost:3001/api/orders?email=${encodeURIComponent(user.email)}`);
-        const ordersData = await ordersRes.json();
-        setOrders(Array.isArray(ordersData) ? ordersData : []);
-      }
-    } catch {
-      setError('Failed to cancel order');
-    } finally {
-      setCancelling('');
-    }
+  const handleCancel = async (_orderId) => {
+    // No cancel endpoint in backend; show message
+    setError('Cancel is not supported');
   };
 
   if (!user) return (
@@ -67,11 +50,11 @@ function Orders({ user }) {
       <List>
         {orders.map((order) => (
           <ListItem key={order.id} alignItems="flex-start" sx={{ flexDirection: 'column', alignItems: 'flex-start', mb: 2, boxShadow: 1, borderRadius: 2, background: '#fff' }}>
-            <Typography variant="subtitle2" sx={{ color: '#555', mb: 1 }}>Date: {new Date(order.date).toLocaleString()}</Typography>
+            <Typography variant="subtitle2" sx={{ color: '#555', mb: 1 }}>Date: {new Date(order.createdAt).toLocaleString()}</Typography>
             <List sx={{ width: '100%' }}>
               {order.items.map((item, i) => (
                 <ListItem key={i} sx={{ pl: 0 }}>
-                  <ListItemText primary={item.name} secondary={`₹${item.price}`} />
+                  <ListItemText primary={item.productTitle} secondary={`₹${item.price}`} />
                 </ListItem>
               ))}
             </List>

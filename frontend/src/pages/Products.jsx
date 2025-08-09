@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
+import { apiFetch, DEFAULT_IMAGE_URL } from '../api';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Card from '@mui/material/Card';
@@ -22,12 +23,30 @@ function Products({ user }) {
   const [visibleCount, setVisibleCount] = useState(20);
 
   useEffect(() => {
-    fetch('http://localhost:3001/api/products')
-      .then(res => res.json())
-      .then(data => {
-        setAllProducts(data);
-        setProducts(data.slice(0, visibleCount));
-      });
+    (async () => {
+      try {
+        // Backend proxies Strapi and returns Strapi format: { data: [{ id, attributes: {...} }], meta }
+        // Normalize to array of product objects used by UI: { id, name, description, price, category, image }
+        const productsResponse = await apiFetch('/products');
+        const normalized = Array.isArray(productsResponse?.data)
+          ? productsResponse.data.map((entry) => {
+              const id = entry.id;
+              const attrs = entry.attributes || {};
+              const title = attrs.title || attrs.name || 'Untitled';
+              const description = (typeof attrs.description === 'string') ? attrs.description : '';
+              const price = Number(attrs.price ?? 0);
+              const category = Array.isArray(attrs.tags) && attrs.tags.length ? String(attrs.tags[0]) : 'General';
+              const image = DEFAULT_IMAGE_URL;
+              return { id, name: title, description, price, category, image };
+            })
+          : Array.isArray(productsResponse) ? productsResponse : [];
+        setAllProducts(normalized);
+        setProducts(normalized.slice(0, visibleCount));
+      } catch {
+        setAllProducts([]);
+        setProducts([]);
+      }
+    })();
   }, []);
 
   useEffect(() => {
@@ -133,7 +152,7 @@ function Products({ user }) {
                   <CardMedia
                     component="img"
                     height="180"
-                    image={product.image || 'https://via.placeholder.com/200x180?text=No+Image'}
+                    image={product.image || DEFAULT_IMAGE_URL}
                     alt={product.name}
                     sx={{ objectFit: 'contain', background: '#fff', p: 2 }}
                   />

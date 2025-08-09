@@ -1,0 +1,166 @@
+[
+  {
+    "name": "Vivek",
+    "email": "nboominath@gmail.com",
+    "password": "Vivek143$",
+    "orders": []
+  },
+  {
+    "name": "Vivek New",
+    "email": "boominathvivek@gmail.com",
+    "password": "Vivek143$",
+    "orders": [
+      {
+        "id": 1754732957414,
+        "date": "2025-08-09T09:49:17.414Z",
+        "items": [
+          {
+            "id": 1,
+            "name": "Apple iPhone 15",
+            "description": "Latest Apple iPhone 15 with A16 Bionic chip.",
+            "price": 999.99,
+            "image": "https://m.media-amazon.com/images/I/71yzJoE7WlL._AC_SL1500_.jpg",
+            "category": "Mobiles",
+            "stock": 50,
+            "quantity": 1
+          }
+        ]
+      },
+      {
+        "id": 1754733544008,
+        "date": "2025-08-09T09:59:04.008Z",
+        "items": [
+          {
+            "id": 2,
+            "name": "Samsung Galaxy S24",
+            "description": "Samsung flagship phone with stunning display.",
+            "price": 899.99,
+            "image": "https://m.media-amazon.com/images/I/81ZSn2rk9WL._AC_SL1500_.jpg",
+            "category": "Mobiles",
+            "stock": 40,
+            "quantity": 1
+          }
+        ]
+      },
+      {
+        "id": 1754733743904,
+        "date": "2025-08-09T10:02:23.904Z",
+        "items": [
+          {
+            "id": 2,
+            "name": "Samsung Galaxy S24",
+            "description": "Samsung flagship phone with stunning display.",
+            "price": 899.99,
+            "image": "https://m.media-amazon.com/images/I/81ZSn2rk9WL._AC_SL1500_.jpg",
+            "category": "Mobiles",
+            "stock": 40,
+            "quantity": 1
+          }
+        ]
+      },
+      {
+        "id": 1754733880435,
+        "date": "2025-08-09T10:04:40.435Z",
+        "items": [
+          {
+            "id": 2,
+            "name": "Samsung Galaxy S24",
+            "description": "Samsung flagship phone with stunning display.",
+            "price": 899.99,
+            "image": "https://m.media-amazon.com/images/I/81ZSn2rk9WL._AC_SL1500_.jpg",
+            "category": "Mobiles",
+            "stock": 40,
+            "quantity": 1
+          }
+        ]
+      },
+      {
+        "id": 1754734004705,
+        "date": "2025-08-09T10:06:44.705Z",
+        "items": [
+          {
+            "id": 2,
+            "name": "Samsung Galaxy S24",
+            "description": "Samsung flagship phone with stunning display.",
+            "price": 899.99,
+            "image": "https://m.media-amazon.com/images/I/81ZSn2rk9WL._AC_SL1500_.jpg",
+            "category": "Mobiles",
+            "stock": 40,
+            "quantity": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Vivek",
+    "email": "nboominath1@gmail.com",
+    "password": "Vivek143$",
+    "orders": [
+      {
+        "id": 1754734333046,
+        "date": "2025-08-09T10:12:13.046Z",
+        "items": [
+          {
+            "id": 2,
+            "name": "Samsung Galaxy S24",
+            "description": "Samsung flagship phone with stunning display.",
+            "price": 899.99,
+            "image": "https://m.media-amazon.com/images/I/81ZSn2rk9WL._AC_SL1500_.jpg",
+            "category": "Mobiles",
+            "stock": 40,
+            "quantity": 1
+          }
+        ],
+        "shippingAddress": "ship",
+        "deliveryAddress": "ship",
+        "paymentInfo": "UPI: vivek@gbank"
+      },
+      {
+        "id": 1754735616033,
+        "date": "2025-08-09T10:33:36.033Z",
+        "items": [
+          {
+            "id": 2,
+            "name": "Samsung Galaxy S24",
+            "description": "Samsung flagship phone with stunning display.",
+            "price": 899.99,
+            "image": "https://m.media-amazon.com/images/I/81ZSn2rk9WL._AC_SL1500_.jpg",
+            "category": "Mobiles",
+            "stock": 40,
+            "quantity": 1
+          },
+          {
+            "id": 2,
+            "name": "Samsung Galaxy S24",
+            "description": "Samsung flagship phone with stunning display.",
+            "price": 899.99,
+            "image": "https://m.media-amazon.com/images/I/81ZSn2rk9WL._AC_SL1500_.jpg",
+            "category": "Mobiles",
+            "stock": 40,
+            "quantity": 1
+          },
+          {
+            "id": 2,
+            "name": "Samsung Galaxy S24",
+            "description": "Samsung flagship phone with stunning display.",
+            "price": 899.99,
+            "image": "https://m.media-amazon.com/images/I/81ZSn2rk9WL._AC_SL1500_.jpg",
+            "category": "Mobiles",
+            "stock": 40,
+            "quantity": 1
+          }
+        ],
+        "shippingAddress": "viveknandhagoap",
+        "deliveryAddress": "viveknandhagoap",
+        "paymentInfo": "UPI: bank@icici"
+      }
+    ]
+  },
+  {
+    "name": "danial",
+    "email": "danialhcl@gmail.com",
+    "password": "Vivek143$",
+    "orders": []
+  }
+]

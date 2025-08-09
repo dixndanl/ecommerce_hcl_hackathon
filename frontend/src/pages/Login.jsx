@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { apiFetch } from '../api';
 import Container from '@mui/material/Container';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
@@ -13,16 +14,20 @@ function Login({ setUser }) {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const users = JSON.parse(localStorage.getItem('users') || '[]');
-    const user = users.find(u => u.email === email && u.password === password);
-    if (user) {
-      setUser(user);
+    setError('');
+    try {
+      const { token, user } = await apiFetch('/auth/login', {
+        method: 'POST',
+        body: JSON.stringify({ email, password })
+      });
+      localStorage.setItem('authToken', token);
       localStorage.setItem('user', JSON.stringify(user));
+      setUser(user);
       navigate('/products');
-    } else {
-      setError('Invalid credentials');
+    } catch (err) {
+      setError(err.message || 'Login failed');
     }
   };
 

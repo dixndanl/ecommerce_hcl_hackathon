@@ -1,0 +1,174 @@
+[
+  {
+    "id": 1,
+    "name": "Apple iPhone 15",
+    "description": "Latest Apple iPhone 15 with A16 Bionic chip.",
+    "price": 999.99,
+    "image": "https://m.media-amazon.com/images/I/71yzJoE7WlL._AC_SL1500_.jpg",
+    "category": "Mobiles",
+    "stock": 50
+  },
+  {
+    "id": 2,
+    "name": "Samsung Galaxy S24",
+    "description": "Samsung flagship phone with stunning display.",
+    "price": 899.99,
+    "image": "https://m.media-amazon.com/images/I/81ZSn2rk9WL._AC_SL1500_.jpg",
+    "category": "Mobiles",
+    "stock": 40
+  },
+  {
+    "id": 3,
+    "name": "Sony WH-1000XM5 Headphones",
+    "description": "Industry-leading noise canceling headphones.",
+    "price": 349.99,
+    "image": "https://m.media-amazon.com/images/I/61D4Z3yKPAL._AC_SL1500_.jpg",
+    "category": "Electronics",
+    "stock": 30
+  },
+  {
+    "id": 4,
+    "name": "Apple MacBook Air M2",
+    "description": "Apple MacBook Air with M2 chip, 13-inch.",
+    "price": 1199.99,
+    "image": "https://m.media-amazon.com/images/I/71jG+e7roXL._AC_SL1500_.jpg",
+    "category": "Laptops",
+    "stock": 20
+  },
+  {
+    "id": 5,
+    "name": "HP Pavilion 15",
+    "description": "HP Pavilion 15.6-inch FHD Laptop, 12th Gen Intel.",
+    "price": 749.99,
+    "image": "https://m.media-amazon.com/images/I/81l3rZK4lnL._AC_SL1500_.jpg",
+    "category": "Laptops",
+    "stock": 25
+  },
+  {
+    "id": 6,
+    "name": "Amazon Echo Dot (5th Gen)",
+    "description": "Smart speaker with Alexa.",
+    "price": 49.99,
+    "image": "https://m.media-amazon.com/images/I/61u48FEsQKL._AC_SL1000_.jpg",
+    "category": "Electronics",
+    "stock": 100
+  },
+  {
+    "id": 7,
+    "name": "Nike Air Max 270",
+    "description": "Men's running shoes with Max Air cushioning.",
+    "price": 129.99,
+    "image": "https://m.media-amazon.com/images/I/71l1j1rNQSL._AC_UL1500_.jpg",
+    "category": "Footwear",
+    "stock": 60
+  },
+
+  {
+    "id": 9,
+    "name": "Dell XPS 13",
+    "description": "13-inch laptop with InfinityEdge display.",
+    "price": 999.99,
+    "image": "https://m.media-amazon.com/images/I/71w4tT4PZcL._AC_SL1500_.jpg",
+    "category": "Laptops",
+    "stock": 18
+  },
+  {
+    "id": 10,
+    "name": "Canon EOS M50 Mark II",
+    "description": "Mirrorless camera for content creators.",
+    "price": 649.99,
+    "image": "https://m.media-amazon.com/images/I/81rA2pT1uUL._AC_SL1500_.jpg",
+    "category": "Electronics",
+    "stock": 12
+  },
+  {
+    "id": 11,
+    "name": "Apple Watch Series 9",
+    "description": "Smartwatch with advanced health features.",
+    "price": 399.99,
+    "image": "https://m.media-amazon.com/images/I/71bElkQQ7LL._AC_SL1500_.jpg",
+    "category": "Electronics",
+    "stock": 35
+  },
+  {
+    "id": 12,
+    "name": "Samsung QLED TV 55-inch",
+    "description": "4K UHD Smart TV with Quantum Dot technology.",
+    "price": 799.99,
+    "image": "https://m.media-amazon.com/images/I/91Qk4w1l2GL._AC_SL1500_.jpg",
+    "category": "Electronics",
+    "stock": 10
+  },
+  {
+    "id": 13,
+    "name": "Levi's 501 Original Jeans",
+    "description": "Classic straight fit jeans for men.",
+    "price": 59.99,
+    "image": "https://m.media-amazon.com/images/I/81QFQ7N6KGL._AC_UL1500_.jpg",
+    "category": "Clothing",
+    "stock": 80
+  },
+  {
+    "id": 14,
+    "name": "Ray-Ban Wayfarer Sunglasses",
+    "description": "Iconic sunglasses with UV protection.",
+    "price": 129.99,
+    "image": "https://m.media-amazon.com/images/I/71l1j1rNQSL._AC_UL1500_.jpg",
+    "category": "Accessories",
+    "stock": 45
+  },
+  {
+    "id": 15,
+    "name": "Apple iPad Air (2024)",
+    "description": "10.9-inch Liquid Retina display tablet.",
+    "price": 599.99,
+    "image": "https://m.media-amazon.com/images/I/71jG+e7roXL._AC_SL1500_.jpg",
+    "category": "Electronics",
+    "stock": 22
+  },
+  {
+    "id": 16,
+    "name": "Sony PlayStation 5",
+    "description": "Next-gen gaming console with ultra-fast SSD.",
+    "price": 499.99,
+    "image": "https://m.media-amazon.com/images/I/61D4Z3yKPAL._AC_SL1500_.jpg",
+    "category": "Electronics",
+    "stock": 15
+  },
+  {
+    "id": 17,
+    "name": "Puma Running Shoes",
+    "description": "Lightweight shoes for everyday running.",
+    "price": 89.99,
+    "image": "https://m.media-amazon.com/images/I/81QFQ7N6KGL._AC_UL1500_.jpg",
+    "category": "Footwear",
+    "stock": 70
+  },
+  {
+    "id": 18,
+    "name": "Samsung Galaxy Tab S9",
+    "description": "High-performance Android tablet.",
+    "price": 699.99,
+    "image": "https://m.media-amazon.com/images/I/71yzJoE7WlL._AC_SL1500_.jpg",
+    "category": "Electronics",
+    "stock": 20
+  },
+  {
+    "id": 19,
+    "name": "HP Omen Gaming Laptop",
+    "description": "Powerful laptop for gaming and productivity.",
+    "price": 1299.99,
+    "image": "https://m.media-amazon.com/images/I/81l3rZK4lnL._AC_SL1500_.jpg",
+    "category": "Laptops",
+    "stock": 10
+  },
+  {
+    "id": 20,
+    "name": "Mi Smart Band 7",
+    "description": "Fitness tracker with AMOLED display.",
+    "price": 49.99,
+    "image": "https://m.media-amazon.com/images/I/61u48FEsQKL._AC_SL1000_.jpg",
+    "category": "Electronics",
+    "stock": 90
+  }
+]

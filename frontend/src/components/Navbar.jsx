@@ -45,7 +45,7 @@ function Navbar({ user, onLogout }) {
           {user && <Button color="inherit" component={RouterLink} to="/profile">My Profile</Button>}
           {!user && <Button color="inherit" component={RouterLink} to="/login">Login</Button>}
           {!user && <Button color="inherit" component={RouterLink} to="/register">Register</Button>}
-          {user && <Button color="inherit" onClick={onLogout}>Logout</Button>}
+          {user && <Button color="inherit" onClick={() => { localStorage.removeItem('authToken'); onLogout(); }}>Logout</Button>}
         </Box>
       </Toolbar>
     </AppBar>

@@ -17,18 +17,16 @@ function OrderConfirmation() {
     doc.setFontSize(12);
     doc.text(`Order ID: ${order.id}`, 10, y);
     y += 8;
-    doc.text(`Date: ${new Date(order.date).toLocaleString()}`, 10, y);
+    doc.text(`Date: ${new Date(order.createdAt).toLocaleString()}`, 10, y);
     y += 8;
-    doc.text(`Shipping Address: ${order.shippingAddress}`, 10, y);
+    doc.text(`Payment Method: ${order.paymentMethod || 'N/A'}`, 10, y);
     y += 8;
-    doc.text(`Delivery Address: ${order.deliveryAddress}`, 10, y);
-    y += 8;
-    doc.text(`Payment: ${order.paymentInfo}`, 10, y);
+    doc.text(`Total: ${order.totalAmount} ${order.currency}`, 10, y);
     y += 10;
     doc.text('Order Items:', 10, y);
     y += 8;
     order.items?.forEach((item, i) => {
-      doc.text(`${i + 1}. ${item.name} - ₹${item.price}`, 12, y);
+      doc.text(`${i + 1}. ${item.productTitle} x${item.quantity} - ${item.price} ${item.currency}`, 12, y);
       y += 8;
     });
     doc.save(`order_${order.id}.pdf`);
@@ -52,14 +50,13 @@ function OrderConfirmation() {
       {order && (
         <>
           <Typography variant="h6" sx={{ mt: 2 }}>Order ID: {order.id}</Typography>
-          <Typography variant="body2" sx={{ mb: 1 }}>Date: {new Date(order.date).toLocaleString()}</Typography>
-          <Typography variant="body2" sx={{ mb: 1 }}>Shipping Address: {order.shippingAddress || 'Not Provided'}</Typography>
-          <Typography variant="body2" sx={{ mb: 1 }}>Delivery Address: {order.deliveryAddress || 'Not Provided'}</Typography>
-          <Typography variant="body2" sx={{ mb: 1 }}>Payment: {order.paymentInfo || 'Not Provided'}</Typography>
+          <Typography variant="body2" sx={{ mb: 1 }}>Date: {new Date(order.createdAt).toLocaleString()}</Typography>
+          <Typography variant="body2" sx={{ mb: 1 }}>Payment Method: {order.paymentMethod || 'N/A'}</Typography>
+          <Typography variant="body2" sx={{ mb: 1 }}>Total: {order.totalAmount} {order.currency}</Typography>
           <Divider sx={{ marginY: 2 }} />
           <Typography variant="h6">Order Items</Typography>
           {order.items?.map((item, i) => (
-            <Typography key={i} variant="body2">{item.name} - ${item.price}</Typography>
+            <Typography key={i} variant="body2">{item.productTitle} x{item.quantity} - {item.price} {item.currency}</Typography>
           ))}
           <Divider sx={{ marginY: 2 }} />
           <Button variant="outlined" sx={{ mr: 2 }} onClick={handleExportPDF}>Export PDF</Button>
