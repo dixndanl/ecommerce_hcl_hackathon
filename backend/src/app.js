@@ -1,12 +1,16 @@
 import express from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
+import helmet from 'helmet';
 import router from './routes/index.js';
 
 const app = express();
 
 const CLIENT_ORIGIN = process.env.CLIENT_ORIGIN || '*';
 app.use(morgan('dev'));
+app.use(helmet({
+  crossOriginResourcePolicy: { policy: 'cross-origin' },
+}));
 const useWildcardOrigin = CLIENT_ORIGIN === '*' || CLIENT_ORIGIN === 'null';
 const corsOptions = useWildcardOrigin ? { origin: '*' } : { origin: CLIENT_ORIGIN, credentials: true };
 app.use(cors(corsOptions));
