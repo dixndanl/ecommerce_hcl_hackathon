@@ -413,38 +413,10 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
 export interface ApiProductProduct extends Struct.CollectionTypeSchema {
   collectionName: 'products';
   info: {
+    description: 'Simple product with core info and metadata (no variants)';
     displayName: 'Product';
     pluralName: 'products';
     singularName: 'product';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    locale: Schema.Attribute.String & Schema.Attribute.Private;
-    localizations: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::product.product'
-    > &
-      Schema.Attribute.Private;
-    publishedAt: Schema.Attribute.DateTime;
-    updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-  };
-}
-
-export interface ApiSimpleProductSimpleProduct
-  extends Struct.CollectionTypeSchema {
-  collectionName: 'simple_products';
-  info: {
-    description: 'Simple product with core info and metadata (no variants)';
-    displayName: 'Simple Product';
-    pluralName: 'simple-products';
-    singularName: 'simple-product';
   };
   options: {
     draftAndPublish: true;
@@ -477,7 +449,7 @@ export interface ApiSimpleProductSimpleProduct
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
-      'api::simple-product.simple-product'
+      'api::product.product'
     > &
       Schema.Attribute.Private;
     meta: Schema.Attribute.JSON;
@@ -1019,7 +991,6 @@ declare module '@strapi/strapi' {
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
       'api::product.product': ApiProductProduct;
-      'api::simple-product.simple-product': ApiSimpleProductSimpleProduct;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
       'plugin::i18n.locale': PluginI18NLocale;
