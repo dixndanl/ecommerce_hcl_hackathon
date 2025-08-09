@@ -1,6 +1,7 @@
 import { Sequelize, DataTypes } from 'sequelize';
 import bcrypt from 'bcryptjs';
 import defineUser from '../models/User.js';
+import defineAddress from '../models/Address.js';
 
 const databaseUrl = process.env.DATABASE_URL;
 const isSslRequired =
@@ -28,6 +29,8 @@ export const sequelize = databaseUrl
     );
 
 export const User = defineUser(sequelize, DataTypes);
+export const Address = defineAddress(sequelize, DataTypes);
+
 
 export async function syncAndSeed() {
   await sequelize.authenticate();
