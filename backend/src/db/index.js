@@ -2,6 +2,8 @@ import { Sequelize, DataTypes } from 'sequelize';
 import bcrypt from 'bcryptjs';
 import defineUser from '../models/User.js';
 import defineAddress from '../models/Address.js';
+import defineCart from '../models/Cart.js';
+import defineCartItem from '../models/CartItem.js';
 
 const databaseUrl = process.env.DATABASE_URL;
 const isSslRequired =
@@ -30,6 +32,8 @@ export const sequelize = databaseUrl
 
 export const User = defineUser(sequelize, DataTypes);
 export const Address = defineAddress(sequelize, DataTypes);
+export const Cart = defineCart(sequelize, DataTypes);
+export const CartItem = defineCartItem(sequelize, DataTypes);
 
 // Associations
 User.hasMany(Address, { foreignKey: 'userId', as: 'addresses', onDelete: 'CASCADE' });
