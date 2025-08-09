@@ -18,6 +18,195 @@ Project Design Document — E-commerce App
    Strapi Cloud: 5.21
    Helmet: 8.1
 
+### Backend API Routes (implemented)
+
+- Base URL: `http://localhost:3000`
+
+- Health
+  - GET `/health`
+
+- Auth (`/auth`)
+  - POST `/auth/login`
+  - POST `/auth/logout`
+
+- User (root)
+  - GET `/profile` (auth): returns JWT claims and `cartId`
+  - PUT `/profile` (auth)
+  - GET `/addresses` (auth)
+  - POST `/addresses` (auth)
+  - PUT `/addresses/:id` (auth)
+  - DELETE `/addresses/:id` (auth)
+  - GET `/api/private` (auth)
+  - GET `/api/admin` (auth, admin only)
+
+- Products (`/products`)
+  - GET `/products`
+  - GET `/products/:id` (numeric)
+  - GET `/products/slug/:slug`
+  - [internal, commented out] GET `/products/structure`
+  - [internal, commented out] POST `/products/bulk`
+
+- Cart (`/cart`) (auth)
+  - GET `/cart`
+  - POST `/cart/items`
+  - PUT `/cart/items/:id`
+  - DELETE `/cart/items/:id`
+  - DELETE `/cart`
+
+- Orders (`/orders`) (auth)
+  - POST `/orders/checkout`
+  - GET `/orders`
+  - GET `/orders/:id`
+
+### Backend API request/response reference
+
+Below are concise request and response shapes for the implemented backend.
+
+- Health
+  - GET `/health`
+    - Response
+      ```json
+      { "status": "ok", "service": "ecommerce-backend", "timestamp": "ISO8601" }
+      ```
+
+- Auth
+  - POST `/auth/login`
+    - Request
+      ```json
+      { "email": "user@example.com", "password": "string" }
+      ```
+    - Response
+      ```json
+      {
+        "token": "jwt",
+        "user": { "id": "uuid", "email": "user@example.com", "role": "user", "name": "User Name" }
+      }
+      ```
+  - POST `/auth/logout`
+    - Response
+      ```json
+      { "message": "Logged out" }
+      ```
+
+- Profile
+  - GET `/profile` (auth)
+    - Response
+      ```json
+      {
+        "user": { "sub": "uuid", "email": "user@example.com", "role": "user", "name": "User Name" },
+        "cartId": "uuid"
+      }
+      ```
+  - PUT `/profile` (auth)
+    - Request (any subset)
+      ```json
+      { "name": "User Name", "phone": "+91-9000000000" }
+      ```
+    - Response
+      ```json
+      { "user": { "id": "uuid", "email": "user@example.com", "name": "User Name", "role": "user" } }
+      ```
+
+- Addresses (auth)
+  - GET `/addresses`
+    - Response: array of address objects
+      ```json
+      [
+        {
+          "id": "uuid", "userId": "uuid", "label": "Home", "type": "shipping",
+          "line1": "123 MG Road", "line2": "Apt 4B", "city": "Bengaluru", "state": "KA",
+          "postalCode": "560001", "country": "IN", "phone": "+91-9000000000", "isDefault": true,
+          "createdAt": "ISO8601", "updatedAt": "ISO8601"
+        }
+      ]
+      ```
+  - POST `/addresses`
+    - Request (required: `line1`, `city`, `postalCode`)
+      ```json
+      {
+        "label": "Home", "type": "shipping",
+        "line1": "123 MG Road", "line2": "Apt 4B", "city": "Bengaluru", "state": "KA",
+        "postalCode": "560001", "country": "IN", "phone": "+91-9000000000", "isDefault": true
+      }
+      ```
+    - Response: created address object (same shape as above)
+  - PUT `/addresses/:id`
+    - Request: partial update of any address fields
+    - Response: updated address object
+  - DELETE `/addresses/:id`
+    - Response
+      ```json
+      { "deleted": true }
+      ```
+
+- Products (proxy to Strapi)
+  - GET `/products`
+  - GET `/products/:id`
+  - GET `/products/slug/:slug`
+  - Response shape: Strapi format (see section "Products API (backend proxy to Strapi — read-only)" below)
+
+- Cart (auth)
+  - GET `/cart`
+    - Response
+      ```json
+      {
+        "cart": { "id": "uuid", "userId": "uuid", "status": "active", "createdAt": "ISO8601", "updatedAt": "ISO8601" },
+        "items": [
+          { "id": "uuid", "cartId": "uuid", "productId": "string", "productTitle": "Cotton T-Shirt", "price": 899, "currency": "INR", "quantity": 2, "thumbnailUrl": null }
+        ]
+      }
+      ```
+  - POST `/cart/items`
+    - Request (required: `productId`, `productTitle`, `price`, `currency`; optional: `quantity`, `thumbnailUrl`)
+      ```json
+      { "productId": "1", "productTitle": "Cotton T-Shirt", "price": 899, "currency": "INR", "quantity": 1 }
+      ```
+    - Response: created/updated cart item object
+  - PUT `/cart/items/:id`
+    - Request
+      ```json
+      { "quantity": 3 }
+      ```
+    - Response: updated cart item object
+  - DELETE `/cart/items/:id`
+    - Response
+      ```json
+      { "deleted": true }
+      ```
+  - DELETE `/cart`
+    - Response
+      ```json
+      { "cleared": true }
+      ```
+
+- Orders (auth)
+  - POST `/orders/checkout`
+    - Request (cart must be non-empty)
+      ```json
+      { "shippingAddressId": "uuid", "paymentMethod": "cod", "metadata": { "note": "string" } }
+      ```
+    - Response: created order with items
+      ```json
+      {
+        "id": "uuid", "userId": "uuid", "status": "created", "totalAmount": 1798, "currency": "INR",
+        "shippingAddressId": "uuid", "shippingAddressSnapshot": { "line1": "...", "city": "..." },
+        "paymentMethod": "cod", "metadata": null,
+        "items": [
+          { "id": "uuid", "orderId": "uuid", "productId": "1", "productTitle": "Cotton T-Shirt", "price": 899, "currency": "INR", "quantity": 2, "thumbnailUrl": null }
+        ]
+      }
+      ```
+  - GET `/orders`
+    - Response: array of orders (each with `items`)
+  - GET `/orders/:id`
+    - Response: order object (with `items`)
+
+- Error format (common)
+  - When an error occurs, endpoints return a status code and body like:
+    ```json
+    { "error": "Message", "details": "Optional details or validation info" }
+    ```
+
 2. Modules (functional areas)
    • Registration
    • Login / Authentication
